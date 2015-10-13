@@ -22,8 +22,9 @@ See https://github.com/adobe-type-tools/cmap-resources
 -->
 <html dir="ltr" mozdisallowselectionprint moznomarginboxes>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta charset="utf-8">        
+    <meta name="viewport" content="user-scalable=yes, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"> -->
     <meta name="google" content="notranslate">
     <title>PDF.js viewer</title>
 
@@ -44,6 +45,29 @@ See https://github.com/adobe-type-tools/cmap-resources
     <script src="debugger.js"></script>
     <script src="viewer.js"></script>
 
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="hammer.min.js"></script>
+        <script type="text/javascript" src="jquery.hammer.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var HammerPinch = function (ev) {
+                    if (ev.scale > 1){
+                        PDFView.zoomIn();
+                    } else {
+                        PDFView.zoomOut();
+                    }
+                };
+                $('#viewer').hammer(
+                    {  
+                        prevent_default: false, //allow native vertical scroll of the pdf
+                        drag : false,  //prevent hammer js hijack the veritcal scroll touch event 
+                        swipe : false,  
+                        tap : false,
+                        hold : false 
+                    }
+                ).bind('transform', HammerPinch);
+            });
+        </script>
   </head>
 
   <body tabindex="1" class="loadingInProgress">
